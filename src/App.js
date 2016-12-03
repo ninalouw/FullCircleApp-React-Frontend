@@ -12,10 +12,17 @@ class App extends Component {
 
     this.state = {
       goals: [],
-      goal: undefined
+      goal: undefined,
+      //we add concept of editedGoal to state
+      editedGoal: null
     };
   }
 
+  //when the app component is first loaded on the page,
+  //we will make an ajax request to fetch goals
+  componentWillMount () {
+    this.getGoals();
+  }
 //we go straight to get goals. Goals here is goal_list, but we are passing it as 'goals' in our JSON (see Rails app goal_list action).
   getGoals () {
     $.ajax({
@@ -30,6 +37,11 @@ class App extends Component {
       }.bind(this)
     });
   }
+
+// Editing our Goals - we will write this function when our editGoal Modal is ready
+  // editGoal(){
+  //
+  // }
 
   //this gets the goal for our GoalItem component - it fills up the edit form modal
   // we will then do a function edit
@@ -60,18 +72,16 @@ class App extends Component {
   //   });
   // }
 
-  //when the app component is first loaded on the page,
-  //we will make an ajax request to fetch goals
-  componentWillMount () {
-    this.getGoals();
-  }
-
   render () {
     return (
       <div >
         <h1> Welcome to React</h1>
-       <GoalList goals={this.state.goals}/>
-       {/* <GoalItem /> */}
+       <GoalList
+         goals={this.state.goals}/>
+
+         {/* When we have set up editedGoal Modal, this is the component that
+         must be aware of editedGoal, but this is for the future */}
+          {/* <NewGoalForm goal={this.state.editedGoal} */}
       </div>
     );
   }

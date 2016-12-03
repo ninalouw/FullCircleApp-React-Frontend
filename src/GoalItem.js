@@ -1,9 +1,7 @@
 import React from 'react';
 
 function GoalItem ({ goal }) {
-  //
-  // editGoal(){
-  // }
+  // this must be moved to app
   //
   // deleteGoal() {
   //     // ajax post to API to delete
