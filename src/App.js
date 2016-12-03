@@ -12,9 +12,9 @@ class App extends Component {
 
     this.state = {
       goals: [],
-      goal: undefined,
+      goal: undefined
       //we add concept of editedGoal to state
-      editedGoal: null
+      // editedGoal: null
     };
   }
 
@@ -27,7 +27,7 @@ class App extends Component {
   getGoals () {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
-      headers: { "Authorization": apiKeys.GoalsApp },
+      headers: { Authorization: apiKeys.GoalsApp },
       success: function (goals) {
         //once we receive the questions from our server,
         //we store it in the state
@@ -75,7 +75,6 @@ class App extends Component {
   render () {
     return (
       <div >
-        <h1> Welcome to React</h1>
        <GoalList
          goals={this.state.goals}/>
 

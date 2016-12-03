@@ -3,7 +3,9 @@ import GoalItem from './GoalItem';
 
 const GoalList = (props) => {
   return (
-     <ul className="GoalsList">
+    <div>
+    <h1> Your Goals </h1>
+     <ul className="GoalList">
        {
          props.goals.map (
            (goal, index) => {
@@ -16,6 +18,7 @@ const GoalList = (props) => {
          )
        }
      </ul>
+   </div>
   );
 };
 

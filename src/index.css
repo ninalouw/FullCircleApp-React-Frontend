@@ -1,5 +1,38 @@
+
 body {
-  margin: 0;
+  margin: 2 rem;
   padding: 0;
-  font-family: sans-serif;
+  font-family: Helvetica, sans-serif;
+  font-weight: 100;
+}
+.GoalItem {
+  padding: 2 rem;
+  background-color: white;
+  display: flex;
+  flex-flow: row;
+}
+.GoalItem > div {
+  margin-bottom: 1rem;
+}
+.GoalItem > div > li {
+  color: White;
+  padding: 0.1rem 0.5rem;
+  margin-right: 1rem;
+}
+
+.GoalList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-flow: column;
+}
+
+.GoalList > li {
+  padding: 1rem;
+}
+
+.GoalList > li:not(:last-child){
+  margin-bottom: 1rem;
 }

@@ -6,12 +6,15 @@
     "babel-eslint": "^7.1.1",
     "eslint-config-react": "^1.1.7",
     "eslint-plugin-react": "^6.7.1",
-    "react-scripts": "0.7.0"
+    "react-scripts": "0.7.0",
+    "tachyons": "^4.5.5"
   },
   "dependencies": {
     "jquery": "^3.1.1",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-bootstrap": "^0.30.7",
+    "react-dom": "^15.4.1",
+    "react-fontawesome": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
