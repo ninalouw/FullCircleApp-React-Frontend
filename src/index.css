@@ -36,3 +36,12 @@ body {
 .GoalList > li:not(:last-child){
   margin-bottom: 1rem;
 }
+
+/*input[type=checkbox] + label {
+  color: #ccc;
+  font-style: italic;
+}
+input[type=checkbox]:checked + label {
+  color:#0066ff;
+  font-style: normal;
+}*/

@@ -12,7 +12,9 @@ const GoalList = (props) => {
              return (
                <GoalItem
                  goal={goal}
-                 key={goal.id}/>
+                 checkFunction={props.checkFunction}
+                 key={goal.id}
+              />
              );
            }
          )
