@@ -12,7 +12,6 @@ class App extends Component {
     this.state = {
       goals: [],
       // goal: undefined,
-      //we add concept of doneGoal to state
       goal: null
       //we add concept of editedGoal to state
       // editedGoal: null
@@ -51,18 +50,18 @@ class App extends Component {
   //Now will make Rails route and action update_done
   postCheckedGoals (goalIndex) {
     $.ajax({
-      url:`${BASE_URL}/api/v1/goals/${goalIndex}/update_done`,
+      url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
       method: 'POST',
       //in future you could put done: false
       data: { done: true },
-      success: function(goal){
+      success: function (goal) {
         // do nothing
-        console.log('Successfully posted to Database!')
+        console.log('Successfully posted to Database!');
       },
       error: function () {
-        console.errors("Could not post goals!");
+        console.log("Could not post goals!");
       }
-    })
+    });
   }
 
 //we go straight to get goals. Goals here is goal_list, but we are passing it as 'goals' in our JSON (see Rails app goal_list action).

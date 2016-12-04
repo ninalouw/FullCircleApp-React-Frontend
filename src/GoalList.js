@@ -7,7 +7,7 @@ const GoalList = (props) => {
     <h1> Your Goals </h1>
      <ul className="GoalList">
        {
-         props.goals.map (
+         props.goals.map(
            (goal, index) => {
              return (
                <GoalItem
