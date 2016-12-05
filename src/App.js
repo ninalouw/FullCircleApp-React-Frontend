@@ -12,11 +12,12 @@ class App extends Component {
     this.state = {
       goals: [],
       // goal: undefined,
-      goal: null
+      goal: ""
       //we add concept of editedGoal to state
       // editedGoal: null
     };
     this.setGoalAsDone = this.setGoalAsDone.bind(this);
+    this.setGoalDeleted = this.setGoalDeleted.bind(this);
   }
 
   //when the app component is first loaded on the page,
@@ -25,6 +26,7 @@ class App extends Component {
     this.getGoals();
   }
 
+//this function is used to set goals as done on change of checkbox
   setGoalAsDone (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'));
     const currentlyChecked = event.target.getAttribute('checked');
@@ -39,15 +41,30 @@ class App extends Component {
     );
 
     this.setState({ goals: tempGoals });
-
-
-    // ajax post to api to set this as done
-    // post ajax, {goalId: goalIndex}, this is all we must do
-    // then in rails tell it to update count_consec to 1 more, and make latest date completed = today
     this.postCheckedGoals(goalIndex);
   }
-  //Ajax post to API when goal is checked
-  //Now will make Rails route and action update_done
+
+//this function deletes a goal
+  setGoalDeleted (event) {
+    const goalIndex = parseInt(event.target.getAttribute('data-index'));
+    let tempGoals = this.state.goals;
+    tempGoals = tempGoals.filter(
+      (goal) => {
+        //return !(goal.id === goalIndex);
+        if (goal.id === goalIndex) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    );
+
+    this.setState({ goals: tempGoals });
+    this.postRemovedGoals(goalIndex);
+  }
+
+  // //Ajax post to API when goal is checked, this func is called
+  //by setGoalAsDone func
   postCheckedGoals (goalIndex) {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
@@ -62,6 +79,10 @@ class App extends Component {
         console.log("Could not post goals!");
       }
     });
+  }
+
+  postRemovedGoals (goalIndex) {
+
   }
 
 //we go straight to get goals. Goals here is goal_list, but we are passing it as 'goals' in our JSON (see Rails app goal_list action).
@@ -118,8 +139,8 @@ class App extends Component {
       <div >
        <GoalList
          goals={this.state.goals}
-         checkFunction={this.setGoalAsDone}/>
-
+         checkFunction={this.setGoalAsDone}
+         deleteFunction={this.setGoalDeleted}/>
          {/* When we have set up editedGoal Modal, this is the component that
          must be aware of editedGoal, but this is for the future */}
           {/* <NewGoalForm goal={this.state.editedGoal} */}

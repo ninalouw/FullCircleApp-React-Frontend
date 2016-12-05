@@ -6,7 +6,7 @@ function GoalItem (props) {
     <div className="GoalItem">
       <li>
       <h3>{props.goal.name}</h3>
-      <button type="button" className="btn btn-outline-info btn-sm">Edit </button>
+      <button type="button" data-index={props.goal.id} className="btn btn-outline-info btn-sm">Edit </button>
       <input type="checkbox"
              onChange={props.checkFunction}
              data-index={props.goal.id}
@@ -14,7 +14,12 @@ function GoalItem (props) {
       <label style={{ textDecoration: props.goal.done ? "line-through" : "none"
       }}
              htmlFor="checkboxGoal"> Done </label>
-      <button type="button" className="btn btn-outline-danger btn-sm"> Delete </button>
+      <button type="button"
+             onClick={props.deleteFunction}
+             data-index={props.goal.id}
+             style={{ textDecoration: props.goal.remove ? "line-through" : "none"
+             }}
+             className="btn btn-outline-danger btn-sm"> Delete </button>
       <FontAwesome
         className="fa fa-link"
         name="fa fa-link"

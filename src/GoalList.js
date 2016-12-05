@@ -13,6 +13,7 @@ const GoalList = (props) => {
                <GoalItem
                  goal={goal}
                  checkFunction={props.checkFunction}
+                 deleteFunction={props.deleteFunction}
                  key={goal.id}
               />
              );
