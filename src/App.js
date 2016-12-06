@@ -82,7 +82,16 @@ class App extends Component {
   }
 
   postRemovedGoals (goalIndex) {
-
+    $.ajax({
+      url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
+      method: 'DELETE',
+      success: function (goal) {
+        console.log('Successfully deleted goal from Database!');
+      },
+      error: function () {
+        console.log("Could not delete goal!");
+      }
+    });
   }
 
 //we go straight to get goals. Goals here is goal_list, but we are passing it as 'goals' in our JSON (see Rails app goal_list action).
