@@ -6,7 +6,10 @@ function GoalItem (props) {
     <div className="GoalItem">
       <li>
       <h3>{props.goal.name}</h3>
-      <button type="button" data-index={props.goal.id} className="btn btn-outline-info btn-sm">Edit </button>
+      <button type="button"
+              onClick={props.editGoalModalFunction}
+              data-index={props.goal.id}
+              className="btn btn-outline-info btn-sm"> Edit </button>
       <input type="checkbox"
              onChange={props.checkFunction}
              data-index={props.goal.id}
