@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       goals: [],
       goal: "",
-      createModalIsOpen: false,
+      newModalIsOpen: false,
       editModalIsOpen: false,
       goalBeingEdited: null
     };
@@ -70,21 +70,12 @@ class App extends Component {
     this.postRemovedGoals(goalIndex);
   }
 
-  // Editing our Goals - we will write this function when our editGoal Modal is ready
-    // editGoal(event){
-    // //gets called on click
-    // //will get goalIndex
-    // const goalIndex = parseInt(event.target.getAttribute('data-index'));
-    // //will make modal appear, and render goal in editGoalModal
-    //
-    // //on submit, call AJAX post to API
-    // //this.postEditedGoals(goalIndex)
-    // }
-
   //Functions for our Modal
   openModal () {
-    this.setState({ createModalIsOpen: true });
+    this.setState({ newModalIsOpen: true });
   }
+
+//this func gets called on click of edit button
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     //filter func, to find one being edited
@@ -92,9 +83,23 @@ class App extends Component {
     //set one being edited to be oneyoufoundwithfilter (like tempGoals)
     //will also setState goalBeingEdited:oneyoufoundwithfilter
     //but problem is it will return you an array with one object, but we just want the object
-
+    let tempGoals = this.state.goals;
+    tempGoals = tempGoals.filter(
+      (goal) => {
+        if (goal.id === goalIndex) {
+          //if it matches we want to return it (this is the goal we want to edit),
+          //so we make this true
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    this.setState({ goalBeingEdited: tempGoals[0] });
     this.setState({ editModalIsOpen: true });
     console.log('Open edit modal', goalIndex);//  we know the id of the one we want to edit
+    // //on submit, call AJAX post to API
+    // //this.postEditedGoals(goalIndex)
   }
 
   afterOpenModal () {
@@ -103,7 +108,7 @@ class App extends Component {
   }
 
   closeModal () {
-    this.setState({ createModalIsOpen: false });
+    this.setState({ newModalIsOpen: false });
   }
 
   //AJAX REQUESTS
@@ -200,11 +205,15 @@ class App extends Component {
         <div className= "newGoalModal">
           <button onClick={this.openModal}>New Goal</button>
           <NewGoalModal
-            isOpen={this.state.createModalIsOpen}
+            isOpen={this.state.newModalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal} />
        </div>
-       {/* <EditGoalModal /> */}
+       <EditGoalModal
+         goalBeingEdited={this.state.goalBeingEdited}
+         isOpen={this.state.editModalIsOpen}
+         onAfterOpen={this.afterOpenModal}
+         onRequestClose={this.closeModal} />
       </div>
     );
   }

@@ -17,9 +17,10 @@ const EditGoalModal = (props) => {
   <div className= "editGoalModal">
     {
     <Modal
-      isOpen={this.state.editModalIsOpen}
-      onAfterOpen={this.afterOpenModal}
-      onRequestClose={this.closeModal}
+      isOpen={props.isOpen}
+      goalBeingEdited={props.goalBeingEdited}
+      onAfterOpen={props.onAfterOpen}
+      onRequestClose={props.onRequestClose}
       style={customStyles}
       contentLabel="Example Modal"
     >
@@ -28,18 +29,19 @@ const EditGoalModal = (props) => {
         {/* //when modal is not open this will throw an error, so we want an if,
         //if we have found goal/clicked edit, then render this stuff
         //like var content in react-demo */}
-        {/* <p>Goal:{this.state.goalBeingEdited.name} </p> */}
-        <p>Goal:</p>
+        {/* if props.goalBeingEdited.exists? -- look this up */}
+      <p>Goal:{props.goalBeingEdited && props.goalBeingEdited.name} </p>
+        {console.log(props.goalBeingEdited)}
         <input />
-        <p>Minutes:</p>
+        <p>Minutes: { props.goalBeingEdited && props.goalBeingEdited.minutes }</p>
         <input />
         <div>
         <button>Create</button>
-        <button onClick={this.closeModal}>Close</button>
+        <button onClick={props.onRequestClose}>Close</button>
         </div>
       </form>
     </Modal>
-  };
+  }
   </div>
   );
 };

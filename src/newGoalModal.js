@@ -40,5 +40,12 @@ const NewGoalModal = (props) => {
   );
 };
 
+// close (event){
+//   event.preventDefault()
+//
+//   if (this.props.closeModal) {
+//     this.props.closeModal()
+//   }
+// }
 
 export default NewGoalModal;
