@@ -78,17 +78,10 @@ class App extends Component {
 //this func gets called on click of edit button
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
-    //filter func, to find one being edited
-    //we set it to true
-    //set one being edited to be oneyoufoundwithfilter (like tempGoals)
-    //will also setState goalBeingEdited:oneyoufoundwithfilter
-    //but problem is it will return you an array with one object, but we just want the object
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.filter(
       (goal) => {
         if (goal.id === goalIndex) {
-          //if it matches we want to return it (this is the goal we want to edit),
-          //so we make this true
           return true;
         } else {
           return false;
@@ -103,7 +96,6 @@ class App extends Component {
   }
 
   afterOpenModal () {
-    // references are now sync'd and can be accessed.
     this.refs.subtitle.style.color = 'rgb(27, 179, 133)';
   }
 
@@ -145,35 +137,16 @@ class App extends Component {
     });
   }
 
-//we go straight to get goals. Goals here is goal_list, but we are passing it as 'goals' in our JSON (see Rails app goal_list action).
+//we use AJAX get to get initial goals on page
   getGoals () {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
       headers: { Authorization: apiKeys.GoalsApp },
       success: function (goals) {
-        //once we receive the goals from our server,
-        //we store it in the state
         this.setState({ goals: goals });
-        //this func is called asynchronously
-        //we must bind(this) to be able to use this.setState
       }.bind(this)
     });
   }
-
-  // this gets the goal for our GoalItem component - it fills up the edit form modal
-  // we will then do a function edit
-  // getGoal (id) {
-  //   $.ajax({
-  //     url: `${BASE_URL}/api/v1/goals/${id}`,
-  //     success: function (goal) {
-  //       //once we receive the questions from our server,
-  //       //we store it in the state
-  //       this.setState({ goal: goal });
-  //       //this func is called asynchronously
-  //       //we must bind(this) to be able to use this.setState
-  //     }.bind(this)
-  //   });
-  // }
 
  //if a new goal is created, we then want to post and show all of the Goals again.
  //we will get back to this once we have made the NewGoalForm component.

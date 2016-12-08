@@ -26,15 +26,8 @@ const EditGoalModal = (props) => {
     >
       <p ref="subtitle">Edit goal</p>
       <form>
-        {/* //when modal is not open this will throw an error, so we want an if,
-        //if we have found goal/clicked edit, then render this stuff
-        //like var content in react-demo */}
-        {/* if props.goalBeingEdited.exists? -- look this up */}
       <p>Goal:{props.goalBeingEdited && props.goalBeingEdited.name} </p>
-        {console.log(props.goalBeingEdited)}
-        <input />
         <p>Minutes: { props.goalBeingEdited && props.goalBeingEdited.minutes }</p>
-        <input />
         <div>
         <button>Create</button>
         <button onClick={props.onRequestClose}>Close</button>
