@@ -1,7 +1,7 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 
-function GoalItem (props) {
+const GoalItem = (props) => {
   return (
     <div className="GoalItem">
       <li>
@@ -31,7 +31,7 @@ function GoalItem (props) {
     </li>
     </div>
   );
-}
+};
 
 export default GoalItem;
 

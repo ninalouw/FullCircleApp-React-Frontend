@@ -2,19 +2,10 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import GoalList from './GoalList';
 import apiKeys from './apiKeys';
-import Modal from 'react-modal';
+import NewGoalModal from './newGoalModal';
+import EditGoalModal from './editGoalModal';
 
 const BASE_URL = 'http://localhost:3001';
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
-};
 
 class App extends Component {
   constructor (props) {
@@ -22,11 +13,9 @@ class App extends Component {
 
     this.state = {
       goals: [],
-      // goal: undefined,
       goal: "",
       createModalIsOpen: false,
       editModalIsOpen: false,
-      //add to state, goalBeingEdited...
       goalBeingEdited: null
     };
     this.setGoalAsDone = this.setGoalAsDone.bind(this);
@@ -46,7 +35,7 @@ class App extends Component {
 
 //this function is used to set goals as done on change of checkbox
   setGoalAsDone (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'));
+    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     const currentlyChecked = event.target.getAttribute('checked');
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.map(
@@ -64,7 +53,7 @@ class App extends Component {
 
 //this function deletes a goal
   setGoalDeleted (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'));
+    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.filter(
       (goal) => {
@@ -82,30 +71,30 @@ class App extends Component {
   }
 
   // Editing our Goals - we will write this function when our editGoal Modal is ready
-    editGoal(event){
-    //gets called on click
-    //will get goalIndex
-    const goalIndex = parseInt(event.target.getAttribute('data-index'));
-    //will make modal appear, and render goal in editGoalModal
-
-    //on submit, call AJAX post to API
-    //this.postEditedGoals(goalIndex)
-    }
+    // editGoal(event){
+    // //gets called on click
+    // //will get goalIndex
+    // const goalIndex = parseInt(event.target.getAttribute('data-index'));
+    // //will make modal appear, and render goal in editGoalModal
+    //
+    // //on submit, call AJAX post to API
+    // //this.postEditedGoals(goalIndex)
+    // }
 
   //Functions for our Modal
   openModal () {
-    this.setState({createModalIsOpen: true});
+    this.setState({ createModalIsOpen: true });
   }
   openEditModal (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'));
+    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     //filter func, to find one being edited
     //we set it to true
     //set one being edited to be oneyoufoundwithfilter (like tempGoals)
     //will also setState goalBeingEdited:oneyoufoundwithfilter
     //but problem is it will return you an array with one object, but we just want the object
 
-    this.setState({editModalIsOpen: true});
-    console.log('Open edit modal', goalIndex);//WE KNOW ID OF ONE TO EDIT
+    this.setState({ editModalIsOpen: true });
+    console.log('Open edit modal', goalIndex);//  we know the id of the one we want to edit
   }
 
   afterOpenModal () {
@@ -114,7 +103,7 @@ class App extends Component {
   }
 
   closeModal () {
-    this.setState({createModalIsOpen: false});
+    this.setState({ createModalIsOpen: false });
   }
 
   //AJAX REQUESTS
@@ -208,54 +197,14 @@ class App extends Component {
          must be aware of editedGoal, but this is for the future */}
           {/* <NewGoalForm goal={this.state.editedGoal} */}
         </div>
-        <div className= "GoalModal">
+        <div className= "newGoalModal">
           <button onClick={this.openModal}>New Goal</button>
-          <Modal
+          <NewGoalModal
             isOpen={this.state.createModalIsOpen}
             onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <p ref="subtitle">Create a new goal</p>
-            <form>
-              <p>Goal:</p>
-              <input />
-              <p>Minutes:</p>
-              <input />
-              <div>
-              <button>Create</button>
-              <button onClick={this.closeModal}>Close</button>
-              </div>
-            </form>
-          </Modal>
-        </div>
-
-        <div className= "editGoalModal">
-          <Modal
-            isOpen={this.state.editModalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <p ref="subtitle">Edit goal</p>
-            <form>
-              {/* //when modal is not open this will throw an error, so we want an if,
-              //if we have found goal/clicked edit, then render this stuff
-              //like var content in react-demo */}
-              {/* <p>Goal:{this.goalBeingEdited.name} </p> */}
-              <p>Goal:</p>
-              <input />
-              <p>Minutes:</p>
-              <input />
-              <div>
-              <button>Create</button>
-              <button onClick={this.closeModal}>Close</button>
-              </div>
-            </form>
-          </Modal>
-        </div>
+            onRequestClose={this.closeModal} />
+       </div>
+       {/* <EditGoalModal /> */}
       </div>
     );
   }
