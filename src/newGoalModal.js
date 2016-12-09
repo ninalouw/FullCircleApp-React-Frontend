@@ -14,38 +14,27 @@ const customStyles = {
 
 const NewGoalModal = (props) => {
   return (
-    <div>
-      {
-      <Modal
-        isOpen={props.isOpen}
-        onAfterOpen={props.onAfterOpen}
-        onRequestClose={props.onRequestClose}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <p ref="subtitle">Create a new goal</p>
-        <form>
-          <p>Goal:</p>
-          <input />
-          <p>Minutes:</p>
-          <input />
-          <div>
-          <button>Create</button>
-          <button onClick={props.onRequestClose}>Close</button>
-          </div>
-        </form>
-      </Modal>
-    }
-    </div>
+    <Modal
+      isOpen={props.isOpen}
+      onAfterOpen={props.onAfterOpen}
+      onRequestClose={props.onRequestClose}
+      style={customStyles}
+      contentLabel="Example Modal"
+    >
+      <p>Create a new goal</p>
+      <form onSubmit={props.onSubmit}>
+        <p>Goal:</p>
+        <input />
+        <p>Minutes:</p>
+        <input />
+        <div>
+        <button>Create</button>
+
+        </div>
+      </form>
+      <input type="submit" value="Close" onClick={props.onRequestClose}/>
+    </Modal>
   );
 };
-
-// close (event){
-//   event.preventDefault()
-//
-//   if (this.props.closeModal) {
-//     this.props.closeModal()
-//   }
-// }
 
 export default NewGoalModal;

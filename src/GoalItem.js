@@ -14,14 +14,10 @@ const GoalItem = (props) => {
              onChange={props.checkFunction}
              data-index={props.goal.id}
              checked={props.goal.done ? "checked" : ""}/>
-      <label style={{ textDecoration: props.goal.done ? "line-through" : "none"
-      }}
-             htmlFor="checkboxGoal"> Done </label>
+      <label htmlFor="checkboxGoal"> Done </label>
       <button type="button"
              onClick={props.deleteFunction}
              data-index={props.goal.id}
-             style={{ textDecoration: props.goal.remove ? "line-through" : "none"
-             }}
              className="btn btn-outline-danger btn-sm"> Delete </button>
       <FontAwesome
         className="fa fa-link"

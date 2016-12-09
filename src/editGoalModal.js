@@ -14,8 +14,6 @@ const customStyles = {
 
 const EditGoalModal = (props) => {
   return (
-  <div className= "editGoalModal">
-    {
     <Modal
       isOpen={props.isOpen}
       goalBeingEdited={props.goalBeingEdited}
@@ -24,18 +22,28 @@ const EditGoalModal = (props) => {
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <p ref="subtitle">Edit goal</p>
-      <form>
-      <p>Goal:{props.goalBeingEdited && props.goalBeingEdited.name} </p>
-        <p>Minutes: { props.goalBeingEdited && props.goalBeingEdited.minutes }</p>
-        <div>
-        <button>Create</button>
-        <button onClick={props.onRequestClose}>Close</button>
-        </div>
+      <p>Edit goal</p>
+      <form onSubmit={props.onSubmit}>
+        <label>
+          Goal name:
+        </label>
+        <input value={ props.goalBeingEdited && props.goalBeingEdited.name }
+              onChange={props.onChange} />
+        <label>
+          Minutes:
+        </label>
+        <input value={ props.goalBeingEdited && props.goalBeingEdited.minutes }
+              onChange={props.onChange} />
+        <input type="submit" value="Submit" />
+        <p> Days Completed:
+          { props.goalBeingEdited && props.goalBeingEdited.count_consecutive_days_completed }
+        </p>
+        <p> Date last completed:
+          { props.goalBeingEdited && props.goalBeingEdited.latest_date_completed }
+        </p>
       </form>
+      <input type="submit" value="Close" onClick={props.onRequestClose}/>
     </Modal>
-  }
-  </div>
   );
 };
 

@@ -24,6 +24,8 @@ class App extends Component {
     this.openEditModal = this.openEditModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   //when the app component is first loaded on the page,
@@ -36,7 +38,6 @@ class App extends Component {
 //this function is used to set goals as done on change of checkbox
   setGoalAsDone (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
-    const currentlyChecked = event.target.getAttribute('checked');
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.map(
       (goal) => {
@@ -75,7 +76,8 @@ class App extends Component {
     this.setState({ newModalIsOpen: true });
   }
 
-//this func gets called on click of edit button
+//this func gets called on click of edit button, it gets the goal clicked by id
+//and then populates the editGoalModal with the information
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
@@ -91,16 +93,27 @@ class App extends Component {
     this.setState({ goalBeingEdited: tempGoals[0] });
     this.setState({ editModalIsOpen: true });
     console.log('Open edit modal', goalIndex);//  we know the id of the one we want to edit
-    // //on submit, call AJAX post to API
-    // //this.postEditedGoals(goalIndex)
   }
 
   afterOpenModal () {
-    this.refs.subtitle.style.color = 'rgb(27, 179, 133)';
+    // this.refs.subtitle.style.color = 'rgb(27, 179, 133)';
   }
 
   closeModal () {
-    this.setState({ newModalIsOpen: false });
+    this.setState({ newModalIsOpen: false, editModalIsOpen: false });
+  }
+
+  //functions to deal with changing and submitting input of editGoalModal
+  handleChange (event) {
+    this.setState({ valueGoalNameEdit: event.target.valueGoalNameEdit });
+  }
+
+  handleSubmit (event) {
+    console.log('Edited goal submitted');
+    event.preventDefault();
+    //on submit, call AJAX post to API
+    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    this.postEditedGoals(goalIndex);
   }
 
   //AJAX REQUESTS
@@ -133,6 +146,21 @@ class App extends Component {
       },
       error: function () {
         console.log("Could not delete goal!");
+      }
+    });
+  }
+
+   //Ajax POST to API when submit button of editGoalModal clicked, this func is called
+  //by handleSubmit func
+  postEditedGoals (goalIndex) {
+    $.ajax({
+      url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
+      method: 'POST',
+      success: function (goal) {
+        console.log('Successfully posted edited goal to Database!');
+      },
+      error: function () {
+        console.log("Could not post edited goal!");
       }
     });
   }
@@ -186,10 +214,11 @@ class App extends Component {
          goalBeingEdited={this.state.goalBeingEdited}
          isOpen={this.state.editModalIsOpen}
          onAfterOpen={this.afterOpenModal}
-         onRequestClose={this.closeModal} />
+        onRequestClose={this.closeModal}
+        onChange={this.handleChange}
+        onSubmit={this.handleSubmit} />
       </div>
     );
   }
 }
-
 export default App;
