@@ -24,7 +24,8 @@ class App extends Component {
     this.openEditModal = this.openEditModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleMinutesChange = this.handleMinutesChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -103,17 +104,26 @@ class App extends Component {
     this.setState({ newModalIsOpen: false, editModalIsOpen: false });
   }
 
-  //functions to deal with changing and submitting input of editGoalModal
-  handleChange (event) {
-    this.setState({ valueGoalNameEdit: event.target.valueGoalNameEdit });
+  //function to deal with changing and submitting input of editGoalModal
+  handleNameChange (event) {
+    console.log("trying to change form:", event.target.value);
+    const goal = { ...this.state.goalBeingEdited, name: event.target.value };
+    this.setState({ goalBeingEdited: goal });
+  }
+
+  handleMinutesChange (event) {
+    console.log("trying to change form:", event.target.value);
+    const goal = { ...this.state.goalBeingEdited, minutes: event.target.value };
+    this.setState({ goalBeingEdited: goal });
   }
 
   handleSubmit (event) {
     console.log('Edited goal submitted');
     event.preventDefault();
     //on submit, call AJAX post to API
-    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
-    this.postEditedGoals(goalIndex);
+    const editedGoalId = this.state.goalBeingEdited.id;
+    console.log(editedGoalId);
+    this.postEditedGoals(editedGoalId);
   }
 
   //AJAX REQUESTS
@@ -152,18 +162,22 @@ class App extends Component {
 
    //Ajax POST to API when submit button of editGoalModal clicked, this func is called
   //by handleSubmit func
-  postEditedGoals (goalIndex) {
+  postEditedGoals (editedGoalId) {
     $.ajax({
-      url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
-      method: 'POST',
+      url: `${BASE_URL}/api/v1/goals/${editedGoalId}`,
+      data: {goal: this.state.goalBeingEdited},
+      method: 'PATCH',
       success: function (goal) {
         console.log('Successfully posted edited goal to Database!');
-      },
+        this.getGoals();
+        this.closeModal();
+      }.bind(this),
       error: function () {
         console.log("Could not post edited goal!");
       }
     });
   }
+//after this must do a GET to get newly edited goal and re-render it.
 
 //we use AJAX get to get initial goals on page
   getGoals () {
@@ -215,7 +229,8 @@ class App extends Component {
          isOpen={this.state.editModalIsOpen}
          onAfterOpen={this.afterOpenModal}
         onRequestClose={this.closeModal}
-        onChange={this.handleChange}
+        onNameChange={this.handleNameChange}
+        onMinutesChange={this.handleMinutesChange}
         onSubmit={this.handleSubmit} />
       </div>
     );

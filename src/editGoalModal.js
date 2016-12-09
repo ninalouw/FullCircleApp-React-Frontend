@@ -28,13 +28,13 @@ const EditGoalModal = (props) => {
           Goal name:
         </label>
         <input value={ props.goalBeingEdited && props.goalBeingEdited.name }
-              onChange={props.onChange} />
+              onChange={props.onNameChange} />
         <label>
           Minutes:
         </label>
         <input value={ props.goalBeingEdited && props.goalBeingEdited.minutes }
-              onChange={props.onChange} />
-        <input type="submit" value="Submit" />
+              onChange={props.onMinutesChange} />
+        <input type="submit" value="Submit"/>
         <p> Days Completed:
           { props.goalBeingEdited && props.goalBeingEdited.count_consecutive_days_completed }
         </p>
