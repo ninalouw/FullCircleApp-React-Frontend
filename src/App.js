@@ -4,6 +4,7 @@ import GoalList from './GoalList';
 import apiKeys from './apiKeys';
 import NewGoalModal from './newGoalModal';
 import EditGoalModal from './editGoalModal';
+import DeleteGoalModal from './deleteGoalModal';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -16,11 +17,11 @@ class App extends Component {
       goal: "",
       newModalIsOpen: false,
       editModalIsOpen: false,
+      deleteModalIsOpen: false,
       goalBeingEdited: null,
       newGoal: ""
     };
     this.setGoalAsDone = this.setGoalAsDone.bind(this);
-    this.setGoalDeleted = this.setGoalDeleted.bind(this);
     this.openModal = this.openModal.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -31,6 +32,8 @@ class App extends Component {
     this.handleNewNameChange = this.handleNewNameChange.bind(this);
     this.handleNewMinutesChange = this.handleNewMinutesChange.bind(this);
     this.handleNewSubmit = this.handleNewSubmit.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+    this.openDeleteModal = this.openDeleteModal.bind(this);
   }
 
   //when the app component is first loaded on the page,
@@ -57,31 +60,32 @@ class App extends Component {
     this.postCheckedGoals(goalIndex);
   }
 
-//this function deletes a goal
-  setGoalDeleted (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
-    let tempGoals = this.state.goals;
-    tempGoals = tempGoals.filter(
-      (goal) => {
-        if (goal.id === goalIndex) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    );
-
-    this.setState({ goals: tempGoals });
-    this.postRemovedGoals(goalIndex);
-  }
-
   //Functions for our Modal
   openModal () {
     this.setState({ newModalIsOpen: true });
   }
 
+  openDeleteModal (event) {
+    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    let tempGoals = this.state.goals;
+    tempGoals = tempGoals.filter(
+      (goal) => {
+        if (goal.id === goalIndex) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    this.setState({ goalBeingEdited: tempGoals[0] });
+    console.log('Open delete modal', goalIndex);
+    this.setState({ deleteModalIsOpen: true });
+  }
+
 //this func gets called on click of edit button, it gets the goal clicked by id
 //and then populates the editGoalModal with the information
+
+//basically, open delete modal should call this.
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
@@ -104,7 +108,7 @@ class App extends Component {
   }
 
   closeModal () {
-    this.setState({ newModalIsOpen: false, editModalIsOpen: false });
+    this.setState({ newModalIsOpen: false, editModalIsOpen: false, deleteModalIsOpen: false });
   }
 
   //function to deal with changing and submitting name input of editGoalModal
@@ -118,16 +122,6 @@ class App extends Component {
     console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.goalBeingEdited, minutes: event.target.value };
     this.setState({ goalBeingEdited: goal });
-  }
-
-//function that handles the submit of the edited goal from editGoalModal
-  handleEditSubmit (event) {
-    console.log('Edited goal submitted');
-    event.preventDefault();
-    //on submit, call AJAX post to API
-    const editedGoalId = this.state.goalBeingEdited.id;
-    console.log(editedGoalId);
-    this.postEditedGoals(editedGoalId);
   }
 
   //function to deal with adding name input of newGoalModal
@@ -153,6 +147,36 @@ class App extends Component {
     this.postNewGoals(newGoal);
   }
 
+  //function that handles the submit of the edited goal from editGoalModal
+  handleEditSubmit (event) {
+    console.log('Edited goal submitted');
+    event.preventDefault();
+    //on submit, call AJAX post to API
+    const editedGoalId = this.state.goalBeingEdited.id;
+    console.log(editedGoalId);
+    this.postEditedGoals(editedGoalId);
+  }
+
+ //this gets called on confirm of DeleteGoalModal
+  handleDeleteSubmit (event) {
+    console.log('Delete goal confirmed');
+    event.preventDefault();
+    const deletedGoalId = this.state.goalBeingEdited.id;
+    let tempGoals = this.state.goals;
+    tempGoals = tempGoals.filter(
+      (goal) => {
+        if (goal.id === deletedGoalId) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    );
+    this.setState({ goals: tempGoals });
+    console.log(deletedGoalId);
+    this.postRemovedGoals(deletedGoalId);
+  }
+
   //AJAX REQUESTS
   //Ajax post to API when goal is checked, this func is called
   //by setGoalAsDone func
@@ -173,20 +197,20 @@ class App extends Component {
 
   // //Ajax delete to API when delete button clicked, this func is called
   //by setGoalDeleted func
-  postRemovedGoals (goalIndex) {
+  postRemovedGoals (deletedGoalId) {
     $.ajax({
-      url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
+      url: `${BASE_URL}/api/v1/goals/${deletedGoalId}`,
       headers: { 'Authorization': apiKeys.GoalsApp },
       method: 'DELETE',
       success: function (goal) {
         console.log('Successfully deleted goal from Database!');
-      },
+        this.closeModal();
+      }.bind(this),
       error: function () {
         console.log("Could not delete goal!");
       }
     });
   }
-
    //Ajax POST to API when submit button of editGoalModal clicked, this func is called
   //by handleSubmit func. If successful, this function then calls getGoals and closeModal.
   postEditedGoals (editedGoalId) {
@@ -208,7 +232,7 @@ class App extends Component {
 
 //we use AJAX get to get initial goals on page
   getGoals () {
-    console.log(apiKeys.GoalsApp)
+    console.log(apiKeys.GoalsApp);
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
       headers: { 'Authorization': apiKeys.GoalsApp },
@@ -247,7 +271,8 @@ class App extends Component {
          goals={this.state.goals}
          checkFunction={this.setGoalAsDone}
          deleteFunction={this.setGoalDeleted}
-         editGoalModalFunction={this.openEditModal}/>
+         editGoalModalFunction={this.openEditModal}
+         openDeleteModalFunction={this.openDeleteModal}/>
         </div>
         <div className= "newGoalModal">
           <button onClick={this.openModal}>New Goal</button>
@@ -268,7 +293,13 @@ class App extends Component {
         onNameChange={this.handleEditNameChange}
         onMinutesChange={this.handleEditMinutesChange}
         onSubmit={this.handleEditSubmit} />
-      </div>
+      <DeleteGoalModal
+        goalBeingEdited={this.state.goalBeingEdited}
+        isOpen={this.state.deleteModalIsOpen}
+        onAfterOpen={this.afterOpenModal}
+       onRequestClose={this.closeModal}
+       onSubmit={this.handleDeleteSubmit} />
+    </div>
     );
   }
 }

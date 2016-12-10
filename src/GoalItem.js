@@ -13,11 +13,10 @@ const GoalItem = (props) => {
       <input type="button"
               onClick={props.checkFunction}
               data-index={props.goal.id}
-              checked={props.goal.done ? "checked" : ""}
               className="btn btn-outline-info btn-sm"
             value="Done"/>
       <button type="button"
-             onClick={props.deleteFunction}
+             onClick={props.openDeleteModalFunction}
              data-index={props.goal.id}
              className="btn btn-outline-danger btn-sm"> Delete </button>
       <FontAwesome
@@ -29,15 +28,4 @@ const GoalItem = (props) => {
     </div>
   );
 };
-
 export default GoalItem;
-
-// {/* <li>
-//     // {goal.name}
-//     {/*  */}
-// </li> */}
-// onClick={this.editGoal}
-// onClick={this.deleteGoal}
-// onChange={this.doneGoal}
-// <button type="checkbox" className="btn btn-outline-primary btn-sm" data-toggle="button" aria-pressed="false" autoComplete="off"> Done Button </button> //
-             // data-index={goal.id} //

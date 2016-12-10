@@ -15,6 +15,7 @@ const GoalList = (props) => {
                  checkFunction={props.checkFunction}
                  deleteFunction={props.deleteFunction}
                  editGoalModalFunction={props.editGoalModalFunction}
+                 openDeleteModalFunction={props.openDeleteModalFunction}
                  key={goal.id}
               />
              );
