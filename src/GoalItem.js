@@ -10,13 +10,8 @@ const GoalItem = (props) => {
               onClick={props.editGoalModalFunction}
               data-index={props.goal.id}
               className="btn btn-outline-info btn-sm"> Edit </button>
-      {/* <input type="checkbox"
-             onChange={props.checkFunction}
-             data-index={props.goal.id}
-             checked={props.goal.done ? "checked" : ""}/>
-      <label htmlFor="checkboxGoal"> Done </label> */}
       <input type="button"
-              onChange={props.checkFunction}
+              onClick={props.checkFunction}
               data-index={props.goal.id}
               checked={props.goal.done ? "checked" : ""}
               className="btn btn-outline-info btn-sm"
