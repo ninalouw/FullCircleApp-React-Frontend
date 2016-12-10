@@ -15,6 +15,7 @@ const customStyles = {
 const NewGoalModal = (props) => {
   return (
     <Modal
+      newGoal={props.newGoal}
       isOpen={props.isOpen}
       onAfterOpen={props.onAfterOpen}
       onRequestClose={props.onRequestClose}
@@ -24,9 +25,11 @@ const NewGoalModal = (props) => {
       <p>Create a new goal</p>
       <form onSubmit={props.onSubmit}>
         <p>Goal:</p>
-        <input />
+        <input
+          onChange={props.onNameChange}/>
         <p>Minutes:</p>
-        <input />
+        <input
+         onChange={props.onMinutesChange} />
         <div>
         <button>Create</button>
 

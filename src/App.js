@@ -16,7 +16,8 @@ class App extends Component {
       goal: "",
       newModalIsOpen: false,
       editModalIsOpen: false,
-      goalBeingEdited: null
+      goalBeingEdited: null,
+      newGoal: ""
     };
     this.setGoalAsDone = this.setGoalAsDone.bind(this);
     this.setGoalDeleted = this.setGoalDeleted.bind(this);
@@ -24,9 +25,12 @@ class App extends Component {
     this.openEditModal = this.openEditModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleMinutesChange = this.handleMinutesChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEditNameChange = this.handleEditNameChange.bind(this);
+    this.handleEditMinutesChange = this.handleEditMinutesChange.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleNewNameChange = this.handleNewNameChange.bind(this);
+    this.handleNewMinutesChange = this.handleNewMinutesChange.bind(this);
+    this.handleNewSubmit = this.handleNewSubmit.bind(this);
   }
 
   //when the app component is first loaded on the page,
@@ -59,7 +63,6 @@ class App extends Component {
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.filter(
       (goal) => {
-        //return !(goal.id === goalIndex);
         if (goal.id === goalIndex) {
           return false;
         } else {
@@ -93,7 +96,7 @@ class App extends Component {
     );
     this.setState({ goalBeingEdited: tempGoals[0] });
     this.setState({ editModalIsOpen: true });
-    console.log('Open edit modal', goalIndex);//  we know the id of the one we want to edit
+    console.log('Open edit modal', goalIndex);
   }
 
   afterOpenModal () {
@@ -104,20 +107,21 @@ class App extends Component {
     this.setState({ newModalIsOpen: false, editModalIsOpen: false });
   }
 
-  //function to deal with changing and submitting input of editGoalModal
-  handleNameChange (event) {
+  //function to deal with changing and submitting name input of editGoalModal
+  handleEditNameChange (event) {
     console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.goalBeingEdited, name: event.target.value };
     this.setState({ goalBeingEdited: goal });
   }
-
-  handleMinutesChange (event) {
+//function to deal with changing and submitting minutes input of editGoalModal
+  handleEditMinutesChange (event) {
     console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.goalBeingEdited, minutes: event.target.value };
     this.setState({ goalBeingEdited: goal });
   }
 
-  handleSubmit (event) {
+//function that handles the submit of the edited goal from editGoalModal
+  handleEditSubmit (event) {
     console.log('Edited goal submitted');
     event.preventDefault();
     //on submit, call AJAX post to API
@@ -126,17 +130,39 @@ class App extends Component {
     this.postEditedGoals(editedGoalId);
   }
 
+  //function to deal with adding name input of newGoalModal
+  handleNewNameChange (event) {
+    console.log("trying to change form:", event.target.value);
+    const goal = { ...this.state.newGoal, name: event.target.value };
+    this.setState({ newGoal: goal });
+  }
+//function to deal with adding minutes input of newGoalModal
+  handleNewMinutesChange (event) {
+    console.log("trying to change form:", event.target.value);
+    const goal = { ...this.state.newGoal, minutes: event.target.value };
+    this.setState({ newGoal: goal });
+  }
+
+  //function that handles the submit of the new goal from newGoalModal
+  handleNewSubmit (event) {
+    console.log('New goal submitted');
+    event.preventDefault();
+    //on submit, call AJAX post to API
+    const newGoal = this.state.newGoal;
+    console.log(newGoal);
+    this.postNewGoals(newGoal);
+  }
+
   //AJAX REQUESTS
   //Ajax post to API when goal is checked, this func is called
   //by setGoalAsDone func
   postCheckedGoals (goalIndex) {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
+      headers: { 'Authorization': apiKeys.GoalsApp },
       method: 'POST',
-      //in future you could put done: false
       data: { done: true },
       success: function (goal) {
-        // do nothing
         console.log('Successfully posted to Database!');
       },
       error: function () {
@@ -150,6 +176,7 @@ class App extends Component {
   postRemovedGoals (goalIndex) {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals/${goalIndex}`,
+      headers: { 'Authorization': apiKeys.GoalsApp },
       method: 'DELETE',
       success: function (goal) {
         console.log('Successfully deleted goal from Database!');
@@ -161,11 +188,12 @@ class App extends Component {
   }
 
    //Ajax POST to API when submit button of editGoalModal clicked, this func is called
-  //by handleSubmit func
+  //by handleSubmit func. If successful, this function then calls getGoals and closeModal.
   postEditedGoals (editedGoalId) {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals/${editedGoalId}`,
-      data: {goal: this.state.goalBeingEdited},
+      headers: { 'Authorization': apiKeys.GoalsApp },
+      data: { goal: this.state.goalBeingEdited },
       method: 'PATCH',
       success: function (goal) {
         console.log('Successfully posted edited goal to Database!');
@@ -177,13 +205,13 @@ class App extends Component {
       }
     });
   }
-//after this must do a GET to get newly edited goal and re-render it.
 
 //we use AJAX get to get initial goals on page
   getGoals () {
+    console.log(apiKeys.GoalsApp)
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
-      headers: { Authorization: apiKeys.GoalsApp },
+      headers: { 'Authorization': apiKeys.GoalsApp },
       success: function (goals) {
         this.setState({ goals: goals });
       }.bind(this)
@@ -192,17 +220,24 @@ class App extends Component {
 
  //if a new goal is created, we then want to post and show all of the Goals again.
  //we will get back to this once we have made the NewGoalForm component.
-  // postGoals (goalParams) {
-  //   $.ajax({
-  //     url: `${BASE_URL}/api/v1/goals`,
-  //     data: { goal: goalParams },
-  //     method: 'POST',
-  //     success: function (response) {
-  //       //if the post succeeds, reload the list of Goals
-  //       this.getGoals();
-  //     }.bind(this)
-  //   });
-  // }
+ // postNewGoals(newGoal)
+  postNewGoals (newGoal) {
+    $.ajax({
+      url: `${BASE_URL}/api/v1/goals`,
+      headers: { 'Authorization': apiKeys.GoalsApp },
+      data: { goal: newGoal },
+      method: 'POST',
+      success: function (response) {
+        console.log('Successfully posted your new goal');
+        //if the post succeeds, reload the list of Goals
+        this.getGoals();
+        this.closeModal();
+      }.bind(this),
+      error: function () {
+        console.log("Could not post new goal!");
+      }
+    });
+  }
 
   render () {
     return (
@@ -213,25 +248,26 @@ class App extends Component {
          checkFunction={this.setGoalAsDone}
          deleteFunction={this.setGoalDeleted}
          editGoalModalFunction={this.openEditModal}/>
-         {/* When we have set up editedGoal Modal, this is the component that
-         must be aware of editedGoal, but this is for the future */}
-          {/* <NewGoalForm goal={this.state.editedGoal} */}
         </div>
         <div className= "newGoalModal">
           <button onClick={this.openModal}>New Goal</button>
           <NewGoalModal
+            newGoal={this.state.newGoal}
             isOpen={this.state.newModalIsOpen}
             onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal} />
+            onRequestClose={this.closeModal}
+            onNameChange={this.handleNewNameChange}
+            onMinutesChange={this.handleNewMinutesChange}
+            onSubmit={this.handleNewSubmit} />
        </div>
        <EditGoalModal
          goalBeingEdited={this.state.goalBeingEdited}
          isOpen={this.state.editModalIsOpen}
          onAfterOpen={this.afterOpenModal}
         onRequestClose={this.closeModal}
-        onNameChange={this.handleNameChange}
-        onMinutesChange={this.handleMinutesChange}
-        onSubmit={this.handleSubmit} />
+        onNameChange={this.handleEditNameChange}
+        onMinutesChange={this.handleEditMinutesChange}
+        onSubmit={this.handleEditSubmit} />
       </div>
     );
   }
