@@ -5,6 +5,7 @@ import apiKeys from './apiKeys';
 import NewGoalModal from './newGoalModal';
 import EditGoalModal from './editGoalModal';
 import DeleteGoalModal from './deleteGoalModal';
+import GoalDoughnutChart from './DoughnutChart';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -40,6 +41,8 @@ class App extends Component {
   //we will make an ajax request to fetch goals
   componentWillMount () {
     this.getGoals();
+    // this.getCanvas();
+    // this.getChart();
   }
 
 
@@ -84,7 +87,6 @@ class App extends Component {
 
 //this func gets called on click of edit button, it gets the goal clicked by id
 //and then populates the editGoalModal with the information
-
 //basically, open delete modal should call this.
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
@@ -130,6 +132,7 @@ class App extends Component {
     const goal = { ...this.state.newGoal, name: event.target.value };
     this.setState({ newGoal: goal });
   }
+
 //function to deal with adding minutes input of newGoalModal
   handleNewMinutesChange (event) {
     console.log("trying to change form:", event.target.value);
@@ -299,6 +302,10 @@ class App extends Component {
         onAfterOpen={this.afterOpenModal}
        onRequestClose={this.closeModal}
        onSubmit={this.handleDeleteSubmit} />
+     <div class="chart">
+      <GoalDoughnutChart
+        goals={this.state.goals} />
+     </div>
     </div>
     );
   }
