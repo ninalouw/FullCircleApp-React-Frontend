@@ -41,8 +41,6 @@ class App extends Component {
   //we will make an ajax request to fetch goals
   componentWillMount () {
     this.getGoals();
-    // this.getCanvas();
-    // this.getChart();
   }
 
 
@@ -302,7 +300,7 @@ class App extends Component {
         onAfterOpen={this.afterOpenModal}
        onRequestClose={this.closeModal}
        onSubmit={this.handleDeleteSubmit} />
-     <div class="chart">
+     <div className="chart">
       <GoalDoughnutChart
         goals={this.state.goals} />
      </div>
