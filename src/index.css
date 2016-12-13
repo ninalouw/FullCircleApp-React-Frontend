@@ -36,6 +36,10 @@ body {
   margin-bottom: 1rem;
 }
 
+/*.GoalBarChart {
+  transform: rotate(90deg);
+}*/
+
 /*input[type=checkbox] + label {
   color: #ccc;
   font-style: italic;

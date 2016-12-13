@@ -6,6 +6,7 @@ import NewGoalModal from './newGoalModal';
 import EditGoalModal from './editGoalModal';
 import DeleteGoalModal from './deleteGoalModal';
 import GoalDoughnutChart from './DoughnutChart';
+// import GoalBarChart from './BarChart';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -300,7 +301,7 @@ class App extends Component {
         onAfterOpen={this.afterOpenModal}
        onRequestClose={this.closeModal}
        onSubmit={this.handleDeleteSubmit} />
-     <div className="chart">
+     <div className="doughnutChart">
       <GoalDoughnutChart
         goals={this.state.goals} />
      </div>
@@ -309,3 +310,8 @@ class App extends Component {
   }
 }
 export default App;
+
+{/* <div className="barChart">
+  <GoalBarChart
+    goals={this.state.goals} />
+</div> */}

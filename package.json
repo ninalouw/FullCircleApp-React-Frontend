@@ -19,6 +19,7 @@
     "react-chartjs-2": "^1.6.0",
     "react-dom": "^15.4.1",
     "react-fontawesome": "^1.4.0",
+    "react-icons": "^2.2.1",
     "react-modal": "^1.6.1"
   },
   "scripts": {

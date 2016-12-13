@@ -1,5 +1,5 @@
 import React from 'react';
-import FontAwesome from 'react-fontawesome';
+import GoalBarChart from './BarChart';
 
 const GoalItem = (props) => {
   return (
@@ -19,12 +19,11 @@ const GoalItem = (props) => {
              onClick={props.openDeleteModalFunction}
              data-index={props.goal.id}
              className="btn btn-outline-danger btn-sm"> Delete </button>
-      <FontAwesome
-        className="fa fa-link"
-        name="fa fa-link"
-        size="2x"
-      />
     </li>
+    <div className="GoalBarChart">
+      <GoalBarChart count={props.goal.count_consecutive_days_completed}
+                name={props.goal.name} />
+    </div>
     </div>
   );
 };
