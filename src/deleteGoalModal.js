@@ -24,7 +24,7 @@ const DeleteGoalModal = (props) => {
     >
     <form onSubmit={props.onSubmit}>
       <p>Are you sure you want to delete this goal?</p>
-      <input type="submit" value="Submit/Confirm"/>
+      <input type="submit" value="Confirm"/>
    </form>
     </Modal>
   );

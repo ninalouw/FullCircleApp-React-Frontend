@@ -22,7 +22,8 @@ const GoalItem = (props) => {
     </li>
     <div className="GoalBarChart">
       <GoalBarChart count={props.goal.count_consecutive_days_completed}
-                name={props.goal.name} />
+                name={props.goal.name}
+              maxDayCount={props.maxDayCount} />
     </div>
     </div>
   );

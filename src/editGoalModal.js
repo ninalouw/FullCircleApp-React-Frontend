@@ -35,12 +35,6 @@ const EditGoalModal = (props) => {
         <input value={props.goalBeingEdited && props.goalBeingEdited.minutes}
               onChange={props.onMinutesChange} />
         <input type="submit" value="Submit"/>
-        {/* <p> Days Completed:
-          { props.goalBeingEdited && props.goalBeingEdited.count_consecutive_days_completed }
-        </p>
-        <p> Date last completed:
-          { props.goalBeingEdited && props.goalBeingEdited.latest_date_completed }
-        </p> */}
       </form>
       <input type="submit" value="Close" onClick={props.onRequestClose}/>
     </Modal>

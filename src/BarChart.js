@@ -1,22 +1,15 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
-
-//from goalItem we have access to props.count and props.name
+import { HorizontalBar } from 'react-chartjs-2';
 
 const GoalBarChart = (props) => {
-//   const goalDayCount = props.goals.map((goal) => {
-//     return goal.count_consecutive_days_completed;
-//   });
-//   const goalNames = props.goals.map((goal) => {
-//     return goal.name;
-//   });
-
   const data = {
     labels: [props.name],
     datasets: [
       {
+        label: "Days Completed",
         data: [props.count],
         backgroundColor: [
+          "rgb(8, 233, 125)",
           "#F7464A",
           "#46BFBD",
           "rgb(246, 224, 76)",
@@ -30,6 +23,7 @@ const GoalBarChart = (props) => {
           "rgb(158, 4, 18)"
         ],
         hoverBackgroundColor: [
+          "rgb(74, 240, 178)",
           "#FF5A5E",
           "#5AD3D1",
           "rgb(246, 240, 92)",
@@ -51,20 +45,24 @@ const GoalBarChart = (props) => {
         display: false
       }],
       xAxes: [{
-        barThickness: 40,
-        categoryPercentage: 0.1,
-        barPercentage: 1.0,
-        display: false
+        ticks: {
+          max: props.maxDayCount,
+          min: 0,
+          beginAtZero: true,
+          stepSize: 1
+        },
+        display: true
       }],
       yAxes: [{
-        display: true
+        display: false,
+        barThickness: 45
       }]
     }
   };
 
   return (
      <div>
-       <Bar data={data} options={options}/>
+       <HorizontalBar data={data} options={options}/>
      </div>
   );
 };

@@ -6,7 +6,6 @@ import NewGoalModal from './newGoalModal';
 import EditGoalModal from './editGoalModal';
 import DeleteGoalModal from './deleteGoalModal';
 import GoalDoughnutChart from './DoughnutChart';
-// import GoalBarChart from './BarChart';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -190,7 +189,8 @@ class App extends Component {
       data: { done: true },
       success: function (goal) {
         console.log('Successfully posted to Database!');
-      },
+        this.getGoals();
+      }.bind(this),
       error: function () {
         console.log("Could not post goals!");
       }
@@ -310,8 +310,3 @@ class App extends Component {
   }
 }
 export default App;
-
-{/* <div className="barChart">
-  <GoalBarChart
-    goals={this.state.goals} />
-</div> */}
