@@ -8,7 +8,8 @@ import DeleteGoalModal from './deleteGoalModal';
 import GoalDoughnutChart from './DoughnutChart';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -278,9 +279,13 @@ class App extends Component {
            deleteFunction={this.setGoalDeleted}
            editGoalModalFunction={this.openEditModal}
            openDeleteModalFunction={this.openDeleteModal}/>
-          <button onClick={this.openModal}>New Goal</button>
+           <FloatingActionButton
+             onClick={this.openModal}
+             style={{ marginRight: '20' }}>
+            <ContentAdd />
+           </FloatingActionButton>
         </div>
-          <div className="GoalDoughnutChart col-xs-6" style={ { height: '80vh' } }>
+          <div className="GoalDoughnutChart col-xs-6" style={{ height: '80vh' }}>
           <GoalDoughnutChart goals={this.state.goals} />
         </div>
       </div>
