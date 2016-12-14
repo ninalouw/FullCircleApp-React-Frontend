@@ -9,6 +9,7 @@ import GoalDoughnutChart from './DoughnutChart';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+
 const BASE_URL = 'http://localhost:3001';
 
 class App extends Component {
@@ -48,7 +49,7 @@ class App extends Component {
 
 //this function is used to set goals as done on change of checkbox
   setGoalAsDone (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    const goalIndex = parseInt(event.currentTarget.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.map(
       (goal) => {
@@ -69,7 +70,7 @@ class App extends Component {
   }
 
   openDeleteModal (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    const goalIndex = parseInt(event.currentTarget.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.filter(
       (goal) => {
@@ -88,7 +89,7 @@ class App extends Component {
 //this func gets called on click of edit button, it gets the goal clicked by id
 //and then populates the editGoalModal with the information
   openEditModal (event) {
-    const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
+    const goalIndex = parseInt(event.currentTarget.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
     tempGoals = tempGoals.filter(
       (goal) => {
