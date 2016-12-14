@@ -55,15 +55,13 @@ const GoalBarChart = (props) => {
       }],
       yAxes: [{
         display: false,
-        barThickness: 45
+        barThickness: 24
       }]
     }
   };
 
   return (
-     <div>
        <HorizontalBar data={data} options={options}/>
-     </div>
   );
 };
 

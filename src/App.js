@@ -6,6 +6,8 @@ import NewGoalModal from './newGoalModal';
 import EditGoalModal from './editGoalModal';
 import DeleteGoalModal from './deleteGoalModal';
 import GoalDoughnutChart from './DoughnutChart';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -85,7 +87,6 @@ class App extends Component {
 
 //this func gets called on click of edit button, it gets the goal clicked by id
 //and then populates the editGoalModal with the information
-//basically, open delete modal should call this.
   openEditModal (event) {
     const goalIndex = parseInt(event.target.getAttribute('data-index'), 10);
     let tempGoals = this.state.goals;
@@ -246,7 +247,6 @@ class App extends Component {
 
  //if a new goal is created, we then want to post and show all of the Goals again.
  //we will get back to this once we have made the NewGoalForm component.
- // postNewGoals(newGoal)
   postNewGoals (newGoal) {
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
@@ -267,17 +267,22 @@ class App extends Component {
 
   render () {
     return (
-      <div className = "AppBody">
-        <div className="GoalList">
-       <GoalList
-         goals={this.state.goals}
-         checkFunction={this.setGoalAsDone}
-         deleteFunction={this.setGoalDeleted}
-         editGoalModalFunction={this.openEditModal}
-         openDeleteModalFunction={this.openDeleteModal}/>
-        </div>
-        <div className= "newGoalModal">
+    <MuiThemeProvider>
+      <div className="container-fluid">
+        <div className="row">
+          <div className= "col-xs-6">
+         <GoalList
+           goals={this.state.goals}
+           checkFunction={this.setGoalAsDone}
+           deleteFunction={this.setGoalDeleted}
+           editGoalModalFunction={this.openEditModal}
+           openDeleteModalFunction={this.openDeleteModal}/>
           <button onClick={this.openModal}>New Goal</button>
+        </div>
+          <div className="GoalDoughnutChart col-xs-6" style={ { height: '80vh' } }>
+          <GoalDoughnutChart goals={this.state.goals} />
+        </div>
+      </div>
           <NewGoalModal
             newGoal={this.state.newGoal}
             isOpen={this.state.newModalIsOpen}
@@ -286,7 +291,6 @@ class App extends Component {
             onNameChange={this.handleNewNameChange}
             onMinutesChange={this.handleNewMinutesChange}
             onSubmit={this.handleNewSubmit} />
-       </div>
        <EditGoalModal
          goalBeingEdited={this.state.goalBeingEdited}
          isOpen={this.state.editModalIsOpen}
@@ -301,12 +305,10 @@ class App extends Component {
         onAfterOpen={this.afterOpenModal}
        onRequestClose={this.closeModal}
        onSubmit={this.handleDeleteSubmit} />
-     <div className="doughnutChart">
-      <GoalDoughnutChart
-        goals={this.state.goals} />
-     </div>
     </div>
+  </MuiThemeProvider>
     );
   }
 }
+injectTapEventPlugin();
 export default App;

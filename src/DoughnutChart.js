@@ -53,10 +53,16 @@ const GoalDoughnutChart = (props) => {
         ]
       }]
   };
+
+  const options = {
+    maintainAspectRatio: false,
+    legend: {
+      position: 'bottom'
+    }
+  };
+
   return (
-    <div>
-      <Doughnut data={data}/>
-    </div>
+      <Doughnut data={data} options={options}/>
   );
 };
 export default GoalDoughnutChart;

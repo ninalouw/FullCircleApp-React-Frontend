@@ -11,16 +11,21 @@
     "tachyons": "^4.5.5"
   },
   "dependencies": {
+    "babel-polyfill": "^6.20.0",
     "chart.js": "^1.1.1",
+    "classnames": "^2.2.5",
+    "flexboxgrid": "^6.3.1",
     "jquery": "^3.1.1",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
     "react-chartjs": "^0.8.0",
     "react-chartjs-2": "^1.6.0",
     "react-dom": "^15.4.1",
+    "react-flexbox-grid": "^0.10.2",
     "react-fontawesome": "^1.4.0",
     "react-icons": "^2.2.1",
-    "react-modal": "^1.6.1"
+    "react-modal": "^1.6.1",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
