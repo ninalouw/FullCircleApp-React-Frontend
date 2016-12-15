@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const customStyles = {
   content: {
@@ -22,20 +23,24 @@ const NewGoalModal = (props) => {
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <p>Create a new goal</p>
+      <h3>Create a new goal</h3>
       <form onSubmit={props.onSubmit}>
-        <p>Goal:</p>
+        <p>Goal: &nbsp;</p>
         <input
           onChange={props.onNameChange}/>
-        <p>Minutes:</p>
+        <p>Minutes: &nbsp;</p>
         <input
          onChange={props.onMinutesChange} />
         <div>
-        <button>Create</button>
-
+        <RaisedButton type="submit" value="Submit" label="Submit" primary={true} style={{ margin: '12' }} />
         </div>
       </form>
-      <input type="submit" value="Close" onClick={props.onRequestClose}/>
+      <RaisedButton type="submit"
+         value="Cancel"
+         onClick={props.onRequestClose}
+         label="Cancel"
+         secondary={true}
+         style={{ margin: '12' }} />
     </Modal>
   );
 };

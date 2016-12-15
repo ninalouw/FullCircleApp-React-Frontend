@@ -23,7 +23,7 @@ const EditGoalModal = (props) => {
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <h2>Edit your goal</h2>
+      <h3>Edit your goal</h3>
       <form onSubmit={props.onSubmit}>
         <label>
           Goal name:&nbsp;
