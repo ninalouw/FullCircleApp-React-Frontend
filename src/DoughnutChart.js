@@ -16,6 +16,7 @@ const GoalDoughnutChart = (props) => {
     labels: goalNames,
     datasets: [
       {
+        label: "Time Spent on Goals",
         data: goalMinutes,
         backgroundColor: [
           "rgb(244, 10, 122)",

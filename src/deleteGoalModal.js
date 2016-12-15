@@ -1,8 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
+import RaisedButton from 'material-ui/RaisedButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const customStyles = {
   content: {
+    fontFamily: 'Roboto',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -14,6 +17,7 @@ const customStyles = {
 
 const DeleteGoalModal = (props) => {
   return (
+    <MuiThemeProvider>
     <Modal
       isOpen={props.isOpen}
       goalBeingEdited={props.goalBeingEdited}
@@ -24,9 +28,16 @@ const DeleteGoalModal = (props) => {
     >
     <form onSubmit={props.onSubmit}>
       <p>Are you sure you want to delete this goal?</p>
-      <input type="submit" value="Confirm"/>
+      <RaisedButton type="submit" value="Confirm" label="Confirm" primary={true} style={{ margin: '12' }} />
    </form>
+      <RaisedButton type="submit"
+         value="Cancel"
+         onClick={props.onRequestClose}
+         label="Cancel"
+         secondary={true}
+         style={{ margin: '12' }} />
     </Modal>
+  </MuiThemeProvider>
   );
 };
 

@@ -41,8 +41,7 @@ class App extends Component {
     this.openDeleteModal = this.openDeleteModal.bind(this);
   }
 
-  //when the app component is first loaded on the page,
-  //we will make an ajax request to fetch goals
+  //ajax request to fetch goals
   componentWillMount () {
     this.getGoals();
   }
