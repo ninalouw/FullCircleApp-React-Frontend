@@ -267,7 +267,8 @@ class App extends Component {
            </FloatingActionButton>
         </div>
           <div className="GoalDoughnutChart col-xs-6" style={{ height: '80vh' }}>
-          <GoalDoughnutChart goals={this.state.goals} />
+           <h2>Time Spent on Goals</h2>
+           <GoalDoughnutChart goals={this.state.goals} />
         </div>
       </div>
           <NewGoalModal

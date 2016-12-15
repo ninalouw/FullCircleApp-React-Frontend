@@ -9,8 +9,6 @@ const GoalDoughnutChart = (props) => {
   const goalNames = props.goals.map((goal) => {
     return goal.name;
   });
-  console.log("These are the minutes", goalMinutes);
-  console.log("These are our goal names", goalNames);
 
   const data = {
     labels: goalNames,
@@ -24,7 +22,6 @@ const GoalDoughnutChart = (props) => {
           "#00BFA5",
           "rgb(246, 224, 76)",
           "rgb(246, 138, 50)",
-          "#4D5360",
           "#00B8D4",
           "rgb(73, 101, 185)",
           "rgb(161, 87, 196)",
@@ -40,7 +37,6 @@ const GoalDoughnutChart = (props) => {
           "#5AD3D1",
           "rgb(246, 240, 92)",
           "rgb(242, 118, 57)",
-          "#616774",
           "rgb(97, 190, 214)",
           "rgb(105, 123, 213)",
           "rgb(184, 73, 212)",
