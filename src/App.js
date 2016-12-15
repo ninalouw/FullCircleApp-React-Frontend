@@ -10,6 +10,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import AppBar from 'material-ui/AppBar';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -82,7 +83,6 @@ class App extends Component {
       }
     );
     this.setState({ goalBeingEdited: tempGoals[0] });
-    console.log('Open delete modal', goalIndex);
     this.setState({ deleteModalIsOpen: true });
   }
 
@@ -102,7 +102,6 @@ class App extends Component {
     );
     this.setState({ goalBeingEdited: tempGoals[0] });
     this.setState({ editModalIsOpen: true });
-    console.log('Open edit modal', goalIndex);
   }
 
   afterOpenModal () {
@@ -115,54 +114,45 @@ class App extends Component {
 
   //function to deal with changing and submitting name input of editGoalModal
   handleEditNameChange (event) {
-    console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.goalBeingEdited, name: event.target.value };
     this.setState({ goalBeingEdited: goal });
   }
 //function to deal with changing and submitting minutes input of editGoalModal
   handleEditMinutesChange (event) {
-    console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.goalBeingEdited, minutes: event.target.value };
     this.setState({ goalBeingEdited: goal });
   }
 
   //function to deal with adding name input of newGoalModal
   handleNewNameChange (event) {
-    console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.newGoal, name: event.target.value };
     this.setState({ newGoal: goal });
   }
 
 //function to deal with adding minutes input of newGoalModal
   handleNewMinutesChange (event) {
-    console.log("trying to change form:", event.target.value);
     const goal = { ...this.state.newGoal, minutes: event.target.value };
     this.setState({ newGoal: goal });
   }
 
   //function that handles the submit of the new goal from newGoalModal
   handleNewSubmit (event) {
-    console.log('New goal submitted');
     event.preventDefault();
     //on submit, call AJAX post to API
     const newGoal = this.state.newGoal;
-    console.log(newGoal);
     this.postNewGoals(newGoal);
   }
 
   //function that handles the submit of the edited goal from editGoalModal
   handleEditSubmit (event) {
-    console.log('Edited goal submitted');
     event.preventDefault();
     //on submit, call AJAX post to API
     const editedGoalId = this.state.goalBeingEdited.id;
-    console.log(editedGoalId);
     this.postEditedGoals(editedGoalId);
   }
 
  //this gets called on confirm of DeleteGoalModal
   handleDeleteSubmit (event) {
-    console.log('Delete goal confirmed');
     event.preventDefault();
     const deletedGoalId = this.state.goalBeingEdited.id;
     let tempGoals = this.state.goals;
@@ -176,7 +166,6 @@ class App extends Component {
       }
     );
     this.setState({ goals: tempGoals });
-    console.log(deletedGoalId);
     this.postRemovedGoals(deletedGoalId);
   }
 
@@ -190,11 +179,9 @@ class App extends Component {
       method: 'POST',
       data: { done: true },
       success: function (goal) {
-        console.log('Successfully posted to Database!');
         this.getGoals();
       }.bind(this),
       error: function () {
-        console.log("Could not post goals!");
       }
     });
   }
@@ -207,11 +194,9 @@ class App extends Component {
       headers: { 'Authorization': apiKeys.GoalsApp },
       method: 'DELETE',
       success: function (goal) {
-        console.log('Successfully deleted goal from Database!');
         this.closeModal();
       }.bind(this),
       error: function () {
-        console.log("Could not delete goal!");
       }
     });
   }
@@ -224,19 +209,16 @@ class App extends Component {
       data: { goal: this.state.goalBeingEdited },
       method: 'PATCH',
       success: function (goal) {
-        console.log('Successfully posted edited goal to Database!');
         this.getGoals();
         this.closeModal();
       }.bind(this),
       error: function () {
-        console.log("Could not post edited goal!");
       }
     });
   }
 
 //we use AJAX get to get initial goals on page
   getGoals () {
-    console.log(apiKeys.GoalsApp);
     $.ajax({
       url: `${BASE_URL}/api/v1/goals`,
       headers: { 'Authorization': apiKeys.GoalsApp },
@@ -255,13 +237,10 @@ class App extends Component {
       data: { goal: newGoal },
       method: 'POST',
       success: function (response) {
-        console.log('Successfully posted your new goal');
-        //if the post succeeds, reload the list of Goals
         this.getGoals();
         this.closeModal();
       }.bind(this),
       error: function () {
-        console.log("Could not post new goal!");
       }
     });
   }
@@ -270,6 +249,9 @@ class App extends Component {
     return (
     <MuiThemeProvider>
       <div className="container-fluid">
+        <AppBar
+          title="Full Circle"
+          iconClassNameRight="muidocs-icon-navigation-expand-more"/>
         <div className="row">
           <div className= "col-xs-6">
          <GoalList

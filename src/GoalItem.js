@@ -1,6 +1,5 @@
 import React from 'react';
 import GoalBarChart from './BarChart';
-import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import ActionCheckCircle from 'material-ui/svg-icons/action/check-circle';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
