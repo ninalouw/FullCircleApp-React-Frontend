@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import $ from 'jquery';
 import GoalList from './GoalList';
 import apiKeys from './apiKeys';
@@ -24,7 +24,7 @@ class App extends Component {
       newModalIsOpen: false,
       editModalIsOpen: false,
       deleteModalIsOpen: false,
-      goalBeingEdited: null,
+      goalBeingEdited: null, // change this to be activeGoal
       newGoal: ""
     };
     this.setGoalAsDone = this.setGoalAsDone.bind(this);
@@ -253,7 +253,7 @@ class App extends Component {
           title="Full Circle"
           iconClassNameRight="muidocs-icon-navigation-expand-more"/>
         <div className="row">
-          <div className= "col-xs-6">
+          <div className= "col-xs-12 col-md-7 col-lg-6">
          <GoalList
            goals={this.state.goals}
            checkFunction={this.setGoalAsDone}
@@ -261,12 +261,13 @@ class App extends Component {
            editGoalModalFunction={this.openEditModal}
            openDeleteModalFunction={this.openDeleteModal}/>
            <FloatingActionButton
+             className="fab"
              onClick={this.openModal}
              style={{ marginRight: '20' }}>
             <ContentAdd />
            </FloatingActionButton>
         </div>
-          <div className="GoalDoughnutChart col-xs-6" style={{ height: '80vh' }}>
+          <div className="GoalDoughnutChart col-xs-12 col-md-5 col-lg-6" style={{ height: '80vh' }}>
            <h2>Time Spent on Goals</h2>
            <GoalDoughnutChart goals={this.state.goals} />
         </div>
